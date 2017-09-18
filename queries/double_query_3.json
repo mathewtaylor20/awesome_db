@@ -1,0 +1,24 @@
+{
+  "tables" : [
+    {"name" : "user",
+      "columns" : [
+        {"name" : "id", "values" : ["*"]},
+        {"name" : "first_name", "values" : ["*"]},
+        {"name" : "last_name", "values" : ["Smith", "Fry"]},
+        {"name" : "age", "values" : ["*"]},
+        {"name" : "address_id", "values" : ["*"]}
+      ]
+    },
+    {"name" : "address",
+      "columns" : [
+        {"name" : "id", "values" : ["*"]},
+        {"name" : "number", "values" : ["*"]},
+        {"name" : "street", "values" : ["*"]},
+        {"name" : "town", "values" : ["London"]}
+      ]
+    }
+  ],
+  "joins" : [
+    {"left_table" : "user", "right_table" : "address", "left_column" : "address_id", "right_column" : "id", "type" : "inner"}
+  ]
+}

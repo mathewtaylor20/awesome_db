@@ -1,0 +1,1 @@
+{"selects": {"user": {"last_name": {"score": 0, "type": "fts"}}, "address": {"town": {"score": 0, "type": "lts"}}}, "joins": {"address_town": {"inner_column": "id", "outer_table": "user", "type": "hash", "inner_table": "address", "outer_column": "address_id"}}, "filters": {"user": {"last_name": {}}, "address": {"town": {}}}}

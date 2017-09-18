@@ -1,0 +1,13 @@
+{
+  "tables" : [
+    {"name" : "user",
+     "columns" : [
+       {"name" : "id", "values" : [52]},
+       {"name" : "first_name", "values" : ["*"]},
+       {"name" : "last_name", "values" : ["*"]},
+       {"name" : "age", "values" : ["*"]},
+       {"name" : "address_id", "values" : ["*"]}
+     ]
+    }
+  ]
+}

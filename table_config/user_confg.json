@@ -1,0 +1,11 @@
+{
+  "table" : "user",
+  "location" : "user.csv",
+  "columns" : [
+    {"name" : "id", "type" : "int", "index" : "True"},
+    {"name" : "first_name", "type" : "str", "index" : "True"},
+    {"name" : "last_name", "type" : "str", "index" : "False"},
+    {"name" : "age", "type" : "int", "index" : "True"},
+    {"name" : "address_id", "type" : "int", "index" : "False"}
+  ]
+}

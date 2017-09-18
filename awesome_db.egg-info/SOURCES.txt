@@ -1,0 +1,6 @@
+setup.py
+awesome_db.egg-info/PKG-INFO
+awesome_db.egg-info/SOURCES.txt
+awesome_db.egg-info/dependency_links.txt
+awesome_db.egg-info/not-zip-safe
+awesome_db.egg-info/top_level.txt

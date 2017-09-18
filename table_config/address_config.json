@@ -1,0 +1,10 @@
+{
+    "table" : "address",
+    "location" : "address.csv",
+    "columns" : [
+        {"name" : "id", "type" : "int", "index" : "True", "primary" : "True"},
+        {"name" : "number", "type" : "int", "index" : "False", "primary" : "False"},
+        {"name" : "street", "type" : "str", "index" : "False", "primary" : "False"},
+        {"name" : "town", "type" : "str", "index" : "False", "primary" : "False"}
+    ]
+}
