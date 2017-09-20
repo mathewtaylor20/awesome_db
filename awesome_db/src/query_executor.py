@@ -87,6 +87,7 @@ class QueryExecutor:
         end = timer()
        # print '\n\n' + str(results)
         print(str(len(results)) + ' results returned in ' + str(end - start))
+        return results
 
     def create_hash_join(self, join_plan, outer_data, inner_data):
         hashed_data = {}

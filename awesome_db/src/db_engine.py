@@ -12,132 +12,82 @@ from timeit import default_timer as timer
 
 class DBEngine:
 
+    def initialize_db(self):
+        quit = False
+        initialized = False
+        initialization_step = 0
+        while quit == False or initialized == True:
+            if initialization_step == 0:
+                command = raw_input('awesome_db: ')
+
+            if command == 'quit' or command == 'q':
+                print 'command q'
+                quit = True
+
+            elif command == 'initialize' or command == 'i':
+                command = raw_input('awesome_db - Do you want to split your db file? : ')
+                initialization_step = 1
+
+            elif initialization_step == 1:
+                if command == 'yes' or command == 'y':
+                    split_file = True
+                else:
+                    split_file = False
+                initialization_step = 2
+                command = raw_input('awesome_db - Do you want to use indexing? : ')
+
+            elif initialization_step == 2:
+                if command == 'yes' or command == 'y':
+                    indexing = True
+                else:
+                    indexing = False
+                initialization_step = 3
+                command = raw_input('awesome_db - Do you want to use query planning? : ')
+
+            elif initialization_step == 3:
+                if command == 'yes' or command == 'y':
+                    query_planning = True
+                else:
+                    query_planning = False
+                initialization_step = 4
+                command = raw_input('awesome_db - Do you want to use other optimization? : ')
+
+            elif initialization_step == 4:
+                initialized = True
+                print 'Initializing db - please wait...'
+
+            else:
+                print 'Unknown command'
+        if quit:
+            print 'Exiting - goodbye!!!'
+            return
+
     def run_db(self):
         while True:
-            command = raw_input('awesome_db: ')
+
             if command == 'quit' or command == 'q':
                 print 'command q'
                 break
 
-            elif command == 'h':
-                self.get_tables()
+            elif command == 'execute' or command == 'e':
+                command = raw_input('awesome_db - enter query file path : ')
+                input_file_path = command
 
-            elif command == 'i':
-                table_name = raw_input('awesome_db (insert) - enter table: ')
-                if self.check_table(table_name):
-                    create_vars = raw_input('awesome_db (insert) - enter values: ')
-                    input_list = map(str, create_vars.split(','))
-                    if self.check_params(table_name, input_list):
-                        self.insert(table_name, input_list)
+            elif command == 'output' or command == 'o':
+                command = raw_input('awesome_db - enter query file path : ')
+                input_file_path = command
+                command = raw_input('awesome_db - enter output file path : ')
+                output_file_path = command
 
-            elif command == 'ri':
-                table_name = raw_input('awesome_db (readi) - enter table: ')
-                if self.check_table(table_name):
-                    read_vars = raw_input('awesome_db (readi) - enter values: ')
-                    input_list = map(str, read_vars.split())
-                    self.read_with_index(table_name, input_list)
-
-            elif command == 'r':
-                table_name = raw_input('awesome_db (read) - enter table: ')
-                if self.check_table(table_name):
-                    read_vars = raw_input('awesome_db (read) - enter values: ')
-                    input_list = map(str, read_vars.split())
-                    self.read(table_name, input_list)
-
-            elif command == 'd':
-                table_name = raw_input('awesome_db (delete) - enter table: ')
-                if self.check_table(table_name):
-                    delete_vars = raw_input('awesome_db (del) - enter values: ')
-                    input_list = map(str, delete_vars.split())
-                    self.delete(table_name, input_list)
-
-            elif command == 'c':
-                table_name = raw_input('awesome_db (count) - enter table: ')
-                if self.check_table(table_name):
-                    count_vars = raw_input('awesome_db (count) - enter values: ')
-                    input_list = map(str, count_vars.split())
-                    self.count(table_name, input_list)
-
-            elif command == 's':
-                table_name = raw_input('awesome_db (sum) - enter table: ')
-                if self.check_table(table_name):
-                    count_vars = raw_input('awesome_db (sum) - enter values: ')
-                    input_list = map(str, count_vars.split())
-                    if self.check_sum_params(table_name, input_list):
-                        sum(table_name, input_list)
-
-            elif command == 'lj':
-                left_table_name = raw_input('awesome_db (join) - enter left table: ')
-                if self.check_table(left_table_name):
-                    left_read_vars = raw_input('awesome_db (read) - enter values: ')
-                    left_args = map(str, left_read_vars.split())
-
-                    left_join_vars = raw_input('awesome_db (read) - enter joins: ')
-                    left_join_columns = map(str, left_join_vars.split())
-                else:
-                    break
-
-                right_table_name = raw_input('awesome_db (join) - enter right table: ')
-                if self.check_table(right_table_name):
-                    right_read_vars = raw_input('awesome_db (read) - enter values: ')
-                    right_args = map(str, right_read_vars.split())
-
-                    right_join_vars = raw_input('awesome_db (read) - enter joins: ')
-                    right_join_columns = map(str, right_join_vars.split())
-                else:
-                    break
-
-                loop_join(left_table_name, left_args, left_join_columns, right_table_name, right_args, right_join_columns)
-
-            elif command == 'hj':
-                left_table_name = raw_input('awesome_db (join) - enter left table: ')
-                if self.check_table(left_table_name):
-                    left_read_vars = raw_input('awesome_db (read) - enter values: ')
-                    left_args = map(str, left_read_vars.split())
-
-                    left_join_vars = raw_input('awesome_db (read) - enter joins: ')
-                    left_join_columns = map(str, left_join_vars.split())
-                else:
-                    break
-
-                right_table_name = raw_input('awesome_db (join) - enter right table: ')
-                if self.check_table(right_table_name):
-                    right_read_vars = raw_input('awesome_db (read) - enter values: ')
-                    right_args = map(str, right_read_vars.split())
-
-                    right_join_vars = raw_input('awesome_db (read) - enter joins: ')
-                    right_join_columns = map(str, right_join_vars.split())
-                else:
-                    break
-
-                hash_join(left_table_name, left_args, left_join_columns, right_table_name, right_args, right_join_columns)
-
-            elif command == 'mj':
-                left_table_name = raw_input('awesome_db (join) - enter left table: ')
-                if self.check_table(left_table_name):
-                    left_read_vars = raw_input('awesome_db (read) - enter values: ')
-                    left_args = map(str, left_read_vars.split())
-
-                    left_join_vars = raw_input('awesome_db (read) - enter joins: ')
-                    left_join_columns = map(str, left_join_vars.split())
-                else:
-                    break
-
-                right_table_name = raw_input('awesome_db (join) - enter right table: ')
-                if self.check_table(right_table_name):
-                    right_read_vars = raw_input('awesome_db (read) - enter values: ')
-                    right_args = map(str, right_read_vars.split())
-
-                    right_join_vars = raw_input('awesome_db (read) - enter joins: ')
-                    right_join_columns = map(str, right_join_vars.split())
-                else:
-                    break
-
-                merge_join(left_table_name, left_args, left_join_columns, right_table_name, right_args, right_join_columns)
+            elif command == 'plan' or command == 'p':
+                command = raw_input('awesome_db - enter query file path : ')
+                input_file_path = command
 
             else:
                 print 'Unknown command'
         print 'Exiting - goodbye!!!'
+
+
 
 
     def get_tables(self):
