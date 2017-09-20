@@ -1,6 +1,6 @@
 import table_data
 
-def create_query_data(query):
+def create_query_data(query, indexing, stats):
     query_data = {}
     query_data['tables'] = {}
     for query_table in query["tables"]:
@@ -15,11 +15,11 @@ def create_query_data(query):
                 query_table_column["name"] = query_table["name"] + "_" + query_column["name"]
                 query_table_column["table"] = query_table["name"]
                 query_table_column["column"] = query_column["name"]
-                query_table_column["column_indexed"] = column_def["index"]
-                query_table_column["column_size"] = column_def["size"]
-                query_table_column["column_cardinality"] = column_def["cardinality"]
-                query_table_column["value_count"] = len(query_column["values"])
-                query_table_column["loop_count"] = len(query_column["values"]) * column_def["size"]
+                query_table_column["column_indexed"] = column_def["index"] if indexing else False
+                query_table_column["column_size"] = column_def["size"] if stats else 0
+                query_table_column["column_cardinality"] = column_def["cardinality"] if stats else 0
+                query_table_column["value_count"] = len(query_column["values"]) if stats else 0
+                query_table_column["loop_count"] = len(query_column["values"]) * column_def["size"] if stats else 0
                 query_table_column["values"] = query_column["values"]
                 query_table_column["position"] = column_def["position"]
                 if query_table_column["column_indexed"] and query_table_column["value_count"] == 1 and query_table_column["column_cardinality"] == 1:
@@ -64,16 +64,16 @@ def create_query_data(query):
         join_def['left'] = {}
         join_def['left']["table"] = left_table_def["name"]
         join_def['left']["column"] = left_column_def["name"]
-        join_def['left']["column_indexed"] = left_column_def["index"]
-        join_def['left']["column_size"] = left_column_def["size"]
-        join_def['left']["column_cardinality"] = left_column_def["cardinality"]
+        join_def['left']["column_indexed"] = left_column_def["index"] if indexing else False
+        join_def['left']["column_size"] = left_column_def["size"] if stats else 0
+        join_def['left']["column_cardinality"] = left_column_def["cardinality"] if stats else 0
 
         join_def['right'] = {}
         join_def['right']["table"] = right_table_def["name"]
         join_def['right']["column"] = right_column_def["name"]
-        join_def['right']["column_indexed"] = right_column_def["index"]
-        join_def['right']["column_size"] = right_column_def["size"]
-        join_def['right']["column_cardinality"] = right_column_def["cardinality"]
+        join_def['right']["column_indexed"] = right_column_def["index"] if indexing else False
+        join_def['right']["column_size"] = right_column_def["size"] if stats else 0
+        join_def['right']["column_cardinality"] = right_column_def["cardinality"] if stats else 0
 
         query_data['joins'].append(join_def)
 

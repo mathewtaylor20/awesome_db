@@ -86,7 +86,7 @@ class QueryExecutor:
 
         end = timer()
        # print '\n\n' + str(results)
-        print(str(len(results)) + ' results returned in ' + str(end - start))
+        print(str(len(results)) + ' results found in ' + str(end - start))
         return results
 
     def create_hash_join(self, join_plan, outer_data, inner_data):
@@ -168,7 +168,7 @@ class QueryExecutor:
 
     def get_file_list(self, query_data, table_select_plan):
         files_set = set()
-        files_set.add(str(table_data.table_data[table_select_plan['table']]["data_loc"]))
+        files_set.update(table_data.table_data[table_select_plan['table']]['data_files'])
         return files_set
 
 
@@ -202,10 +202,14 @@ class QueryExecutor:
                         filtered_select_results.append(result_line)
 
             else:
-                with open('../data/' + file_set, 'rb') as csvfile:
+                with open(table_data.table_data[table_name]["data_store"] + file_set, 'rb') as csvfile:
                     table_reader = csv.reader(csvfile, delimiter=',', quotechar='|')
                     for result_line in table_reader:
-                        if result_line[table_select_plan['position']] in table_select_plan['values']:
+                        data_type = self.get_data_type(table_select_plan['table'], table_select_plan['column'])
+                        read_val = result_line[table_select_plan['position']]
+                        if data_type == 'int':
+                            read_val = int(read_val)
+                        if read_val in table_select_plan['values']:
                             matched = True
                             for filter_plan in filter_select_plan:
                                 if filter_plan['value_count'] == 0:
@@ -216,7 +220,7 @@ class QueryExecutor:
                                     read_val = int(read_val)
                                 if read_val in filter_plan['values']:
                                     if filter_plan['type'] == 'lts':
-                                        filter_plan['value_count'] = filter_plan['value_count'] -1
+                                        filter_plan['value_count'] = filter_plan['value_count'] - 1
                                     continue
                                 else:
                                     matched = False

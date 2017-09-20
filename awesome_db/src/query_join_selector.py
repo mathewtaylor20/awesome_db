@@ -52,8 +52,8 @@ class JoinSelector:
 
             # Hash Join
             # large fraction of a small table needs to be joined.
-            elif ((right_data['column_size'] < 1000 and right_data['cardinality' < 75]) or
-                  (left_data['column_size'] < 1000 and left_data['cardinality' < 75])):
+            elif ((right_data['column_size'] > 0 and right_data['column_size'] < 1000 and right_data['column_cardinality'] < 75) or
+                  (left_data['column_size'] > 0 and left_data['column_size'] < 1000 and left_data['column_cardinality'] < 75)):
                 if left_data['column_size'] > right_data['column_size']:
                     join_results_dict[join_data['name']]['outer_table'] = join_data['left']['table']
                     join_results_dict[join_data['name']]['outer_column'] = join_data['left']['column']
@@ -68,7 +68,8 @@ class JoinSelector:
 
             # Optimized nested loop
             # Small sets
-            elif (right_data['column_size'] < 1000 and left_data['column_size'] < 1000):
+            elif (right_data['column_size'] > 0 and right_data['column_size'] < 1000 and
+                  left_data['column_size'] > 0 and left_data['column_size'] < 1000):
                 join_results_dict[join_data['name']] = {}
                 join_results_dict[join_data['name']]['type'] = 'loop'
                 join_results_dict[join_data['name']]['outer_table'] = join_data['left']['table']
@@ -78,8 +79,8 @@ class JoinSelector:
 
             # Optimized nested loop
             # One Small and other indexed
-            elif ((left_data['column_indexed'] and right_data['column_size'] < 1000) or
-                  (right_data['column_indexed'] and left_data['column_size'] < 1000)):
+            elif ((left_data['column_indexed'] and right_data['column_size'] > 0 and right_data['column_size'] < 1000) or
+                  (right_data['column_indexed'] and left_data['column_size'] > 0 and left_data['column_size'] < 1000)):
                 join_results_dict[join_data['name']] = {}
                 join_results_dict[join_data['name']]['type'] = 'loop'
                 join_results_dict[join_data['name']]['outer_table'] = join_data['left']['table']

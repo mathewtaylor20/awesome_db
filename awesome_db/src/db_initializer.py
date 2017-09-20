@@ -15,10 +15,9 @@ class DBInitializer:
         table_config.create_table_config()
 
         # Split the files and move into the data_store dir
-        if split_file:
-            print 'Splitting data files into pages...'
-            table_file_splitter = TableFileSplitter()
-            table_file_splitter.split_table_files()
+        print 'Splitting data files into pages...'
+        table_file_splitter = TableFileSplitter()
+        table_file_splitter.split_table_files(split_file)
 
         # Create indexes, calculate line count, cardinality and other stats
         if indexing:

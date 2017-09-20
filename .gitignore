@@ -1,5 +1,6 @@
 # Project specific
 awesome_db_env
+data_store
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

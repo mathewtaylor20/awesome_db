@@ -16,12 +16,13 @@ class AwesomeDB:
 
     def run_db(self, db_initializer):
         quit = False
+        initializing = False
         initialized = False
         initialization_step = 0
 
-        query_planning = False
         indexing = False
         split_file = False
+        stats = False
 
         while quit == False or initialized == False:
             if initialization_step == 0 or initialized:
@@ -31,56 +32,60 @@ class AwesomeDB:
                 print 'command q'
                 break
 
-            elif not initialized:
-                if command == 'initialize' or command == 'i':
-                    initialization_step = 1
+            elif initializing and not initialized:
+                if initialization_step == 1:
                     command = raw_input('awesome_db - Do you want to split your db file? : ')
-
-                elif initialization_step == 1:
                     if command == 'yes' or command == 'y':
                         split_file = True
+                    else:
+                        split_file = False
                     initialization_step = 2
-                    command = raw_input('awesome_db - Do you want to use indexing? : ')
 
                 elif initialization_step == 2:
+                    command = raw_input('awesome_db - Do you want to use indexing? : ')
                     if command == 'yes' or command == 'y':
                         indexing = True
+                    else:
+                        indexing = False
                     initialization_step = 3
-                    command = raw_input('awesome_db - Do you want to use table stats? : ')
 
                 elif initialization_step == 3:
+                    command = raw_input('awesome_db - Do you want to use stats? : ')
                     if command == 'yes' or command == 'y':
                         stats = True
+                    else:
+                        stats = False
                     initialization_step = 4
-                    command = raw_input('awesome_db - Do you want to use query planning? : ')
-
-                elif initialization_step == 4:
-                    if command == 'yes' or command == 'y':
-                        query_planning = True
-                    initialization_step = 5
-                    command = raw_input('awesome_db - Do you want to use other optimization? : ')
 
                 elif initialization_step == 4:
                     print 'Initializing db'
                     initialized = db_initializer.initalize_db(split_file, indexing, stats)
+                    initializing = False
 
-            elif initialized:
+            elif command == 'initialize' or command == 'i':
+                initializing = True
+                initialized = False
+                initialization_step = 1
+
+            elif initialized and not initializing:
                 if command == 'execute' or command == 'e':
-                    command = raw_input('awesome_db - enter query file path : ')
-                    query_file_path = command
-                    self.run_query(query_file_path)
+                    command = raw_input('awesome_db - enter query file : ')
+                    query_file_path = '../queries/' + command
+                    self.run_query(query_file_path, indexing, stats)
 
                 elif command == 'output' or command == 'o':
-                    command = raw_input('awesome_db - enter query file path : ')
-                    query_file_path = command
+                    command = raw_input('awesome_db - enter query file : ')
+                    query_file_path = '../queries/' + command
                     command = raw_input('awesome_db - enter output file path : ')
                     output_file_path = command
                     self.output_query(query_file_path, output_file_path)
 
                 elif command == 'plan' or command == 'p':
                     command = raw_input('awesome_db - enter query file path : ')
-                    query_file_path = command
+                    query_file_path = '../queries/' + command
                     self.plan_query(query_file_path)
+
+
 
             else:
                 print 'Unknown command'
@@ -88,11 +93,11 @@ class AwesomeDB:
         print 'Exiting - goodbye!!!'
 
 
-    def run_query(self, query_file_path, split_file, indexing, stats, query_planning):
+    def run_query(self, query_file_path, indexing, stats):
         start = timer()
         with open(query_file_path) as json_data:
             query = json.loads(json_data.read())
-        query_data_obj = query_data.create_query_data(query)
+        query_data_obj = query_data.create_query_data(query, indexing, stats)
         query_planner = QueryPlanner()
         query_plan = query_planner.eval_query(query_data_obj)
         print '\nPlan : ' + str(query_plan)
