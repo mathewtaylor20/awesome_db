@@ -1,8 +1,7 @@
+import json
 from timeit import default_timer as timer
 
-import json
 import query_data
-
 from db_initializer import DBInitializer
 from query_executor import QueryExecutor
 from query_planner import QueryPlanner
@@ -23,6 +22,7 @@ class AwesomeDB:
         indexing = False
         split_file = False
         stats = False
+        print_json = False
 
         while quit == False or initialized == False:
             if initialization_step == 0 or initialized:
@@ -35,7 +35,7 @@ class AwesomeDB:
             elif initializing and not initialized:
                 if initialization_step == 1:
                     command = raw_input('awesome_db - Do you want to split your db file? : ')
-                    if command == 'yes' or command == 'y':
+                    if command == 'yes' or command == 'y' or command == '':
                         split_file = True
                     else:
                         split_file = False
@@ -43,7 +43,7 @@ class AwesomeDB:
 
                 elif initialization_step == 2:
                     command = raw_input('awesome_db - Do you want to use indexing? : ')
-                    if command == 'yes' or command == 'y':
+                    if command == 'yes' or command == 'y' or command == '':
                         indexing = True
                     else:
                         indexing = False
@@ -51,13 +51,21 @@ class AwesomeDB:
 
                 elif initialization_step == 3:
                     command = raw_input('awesome_db - Do you want to use stats? : ')
-                    if command == 'yes' or command == 'y':
+                    if command == 'yes' or command == 'y' or command == '':
                         stats = True
                     else:
                         stats = False
                     initialization_step = 4
 
                 elif initialization_step == 4:
+                    command = raw_input('awesome_db - Do you want to print json? : ')
+                    if command == 'yes' or command == 'y':
+                        print_json = True
+                    else:
+                        print_json = False
+                    initialization_step = 5
+
+                elif initialization_step == 5:
                     print 'Initializing db'
                     initialized = db_initializer.initalize_db(split_file, indexing, stats)
                     initializing = False
@@ -71,14 +79,14 @@ class AwesomeDB:
                 if command == 'execute' or command == 'e':
                     command = raw_input('awesome_db - enter query file : ')
                     query_file_path = '../queries/' + command
-                    self.run_query(query_file_path, indexing, stats)
+                    self.run_query(query_file_path, indexing, stats, print_json)
 
                 elif command == 'output' or command == 'o':
                     command = raw_input('awesome_db - enter query file : ')
                     query_file_path = '../queries/' + command
                     command = raw_input('awesome_db - enter output file path : ')
                     output_file_path = command
-                    self.output_query(query_file_path, output_file_path)
+                    self.output_query(query_file_path, output_file_path, print_json)
 
                 elif command == 'plan' or command == 'p':
                     command = raw_input('awesome_db - enter query file path : ')
@@ -93,34 +101,43 @@ class AwesomeDB:
         print 'Exiting - goodbye!!!'
 
 
-    def run_query(self, query_file_path, indexing, stats):
+    def run_query(self, query_file_path, indexing, stats, print_json):
         start = timer()
         with open(query_file_path) as json_data:
             query = json.loads(json_data.read())
         query_data_obj = query_data.create_query_data(query, indexing, stats)
+        if print_json:
+            print 'yo'
+            print '\nQuery : ' + str(query_data_obj)
         query_planner = QueryPlanner()
         query_plan = query_planner.eval_query(query_data_obj)
-        print '\nPlan : ' + str(query_plan)
+        if print_json:
+            print '\nPlan : ' + str(query_plan)
         query_executor = QueryExecutor()
-        query_result = query_executor.execute_query(query_data_obj, query_plan)
-        print '\nResult : ' + str(query_result)
+        query_result = query_executor.execute_query(query_data_obj, query_plan, indexing)
+        if print_json:
+            print '\nResult : \n' + str(query_result)
         end = timer()
         print('\n\nQuery run time : ' + str(end - start))
 
 
-    def output_query(self, query_file_path):
+    def output_query(self, query_file_path, print_json):
         start = timer()
         with open(query_file_path) as json_data:
             query = json.loads(json_data.read())
         query_data_obj = query_data.create_query_data(query)
+        if print_json:
+            print '\nQuery : ' + str(query_data_obj)
         query_planner = QueryPlanner()
         query_plan = query_planner.eval_query(query_data_obj)
-        print '\nPlan : ' + str(query_plan)
+        if print_json:
+            print '\nPlan : ' + str(query_plan)
         query_executor = QueryExecutor()
         query_result = query_executor.execute_query(query_data_obj, query_plan)
         end = timer()
         print(str(len(query_result)) + ' results returned in ' + str(end - start))
-        print '\nResult : \n' + str(query_result)
+        if print_json:
+            print '\nResult : \n' + str(query_result)
         print('\n\nQuery run time : ' + str(end - start))
 
 

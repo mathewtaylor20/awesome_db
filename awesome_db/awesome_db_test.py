@@ -18,7 +18,7 @@ class AwesomeDBTest(unittest.TestCase):
 
     def test_query_1(self):
 
-        with open('../queries/double_query_4.json') as json_data:
+        with open('../queries/4.json') as json_data:
             query = json.loads(json_data.read())
         start = timer()
         query_data_obj = query_data.create_query_data(query)

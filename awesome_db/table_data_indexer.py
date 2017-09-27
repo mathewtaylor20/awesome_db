@@ -1,8 +1,9 @@
 import csv
-import table_data
+from os import listdir
 
 from BTrees.OOBTree import OOBTree
-from os import listdir
+
+import table_data
 
 
 class TableIndexer:

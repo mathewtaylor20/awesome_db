@@ -16,7 +16,7 @@ class QueryExecutorTest(unittest.TestCase):
 
     def test_plan_hash(self):
         print '\n\n\n Running Hash plan test'
-        with open('../queries/double_query_1.json') as json_data:
+        with open('../queries/1.json') as json_data:
             query = json.loads(json_data.read())
         query_data_obj = query_data.create_query_data(query)
 
@@ -29,7 +29,7 @@ class QueryExecutorTest(unittest.TestCase):
 
     def test_plan_loop(self):
         print '\n\n\n Running Loop plan test'
-        with open('../queries/double_query_1.json') as json_data:
+        with open('../queries/1.json') as json_data:
             query = json.loads(json_data.read())
         query_data_obj = query_data.create_query_data(query)
 
@@ -42,7 +42,7 @@ class QueryExecutorTest(unittest.TestCase):
 
     def test_plan_merge(self):
         print '\n\n\n Running Merge plan test'
-        with open('../queries/double_query_3.json') as json_data:
+        with open('../queries/3.json') as json_data:
             query = json.loads(json_data.read())
         query_data_obj = query_data.create_query_data(query)
 

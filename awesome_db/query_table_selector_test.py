@@ -15,7 +15,7 @@ class QueryTableSelectorTest(unittest.TestCase):
         db_engine.initalize_db()
 
     def test_query_5(self):
-        with open('../queries/double_query_1.json') as json_data:
+        with open('../queries/1.json') as json_data:
             query = json.loads(json_data.read())
         query_data_obj = query_data.create_query_data(query)
         table_selector = TableSelector()
@@ -23,7 +23,7 @@ class QueryTableSelectorTest(unittest.TestCase):
 
 '''
     def test_query_1(self):
-        with open('../queries/double_query_1.json') as json_data:
+        with open('../queries/1.json') as json_data:
             query = json.loads(json_data.read())
         query_data_obj = query_data.create_query_data(query)
         db_optimizer = TableSelector()
@@ -32,7 +32,7 @@ class QueryTableSelectorTest(unittest.TestCase):
 
 
     def test_query_2(self):
-        with open('../queries/double_query_2.json') as json_data:
+        with open('../queries/2.json') as json_data:
             query = json.loads(json_data.read())
         query_data_obj = query_data.create_query_data(query)
         db_optimizer = TableSelector()
@@ -41,7 +41,7 @@ class QueryTableSelectorTest(unittest.TestCase):
 
 
     def test_query_3(self):
-        with open('../queries/double_query_3.json') as json_data:
+        with open('../queries/3.json') as json_data:
             query = json.loads(json_data.read())
         query_data_obj = query_data.create_query_data(query)
         db_optimizer = TableSelector()
@@ -49,7 +49,7 @@ class QueryTableSelectorTest(unittest.TestCase):
         print "3 " + str(db_optimizer.eval_query(query_data_obj, results_list))
 
     def test_query_4(self):
-        with open('../queries/double_query_4.json') as json_data:
+        with open('../queries/4.json') as json_data:
             query = json.loads(json_data.read())
         query_data_obj = query_data.create_query_data(query)
         db_optimizer = TableSelector()

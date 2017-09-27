@@ -34,11 +34,9 @@ def create_query_data(query, indexing, stats):
                     query_table_column['type'] = 'mi'
                     query_table_column['sub_type'] = 3
                 elif query_table_column["value_count"] == 1 and query_table_column["column_cardinality"] == 1:
-                    print query_table_column["column"]
                     query_table_column['type'] = 'lts'
                     query_table_column['sub_type'] = 1
                 elif query_table_column["column_cardinality"] == 1:
-                    print query_table_column["column"]
                     query_table_column['type'] = 'lts'
                     query_table_column['sub_type'] = 2
                 elif query_table_column["value_count"] == 1:
@@ -81,7 +79,6 @@ def create_query_data(query, indexing, stats):
 
 
 def get_result_factor(indexed, size, cardinality, values):
-    result_factor = 0
     if indexed:
         result_factor = float(cardinality * values)
     elif cardinality == 1 or values == 1:

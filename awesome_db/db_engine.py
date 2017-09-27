@@ -1,13 +1,10 @@
 import csv
 import fileinput
 import sys
-import table_data
-
-from op_hash_join import hash_join
-from op_merge_join import merge_join
-from op_loop_join import loop_join
 from os import listdir
 from timeit import default_timer as timer
+
+import table_data
 
 
 class DBEngine:

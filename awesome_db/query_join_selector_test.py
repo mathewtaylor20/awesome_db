@@ -1,8 +1,7 @@
-import query_data
-
-import unittest
 import json
+import unittest
 
+import query_data
 from db_initializer import DBInitializer
 from query_join_selector import JoinSelector
 
@@ -14,7 +13,7 @@ class QueryFilterSelectorTest(unittest.TestCase):
 
 
     def test_query_1(self):
-        with open('../queries/double_query_1.json') as json_data:
+        with open('../queries/1.json') as json_data:
             query = json.loads(json_data.read())
         query_data_obj = query_data.create_query_data(query)
         join_selector = JoinSelector()

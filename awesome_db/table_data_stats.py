@@ -1,7 +1,7 @@
 import csv
-import table_data
-
 from os import listdir
+
+import table_data
 
 
 class TableStats:

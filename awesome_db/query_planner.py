@@ -10,7 +10,7 @@ class QueryPlanner:
 
         start = timer()
         query_results = {}
-        print '\n\nQuery data : ' + str(query_data)
+        #print '\n\nQuery data : ' + str(query_data)
 
         table_selector = TableSelector()
         table_results = table_selector.eval_query(query_data)

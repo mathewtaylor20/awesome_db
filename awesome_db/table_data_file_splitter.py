@@ -1,6 +1,7 @@
-import csv_splitter
 import os
 import shutil
+
+import csv_splitter
 import table_data
 
 
