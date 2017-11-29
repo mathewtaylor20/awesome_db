@@ -10,25 +10,25 @@ class QueryPlanner:
 
         start = timer()
         query_results = {}
-        #print '\n\nQuery data : ' + str(query_data)
+        #print "\n\nQuery data : " + str(query_data)
 
         table_selector = TableSelector()
         table_results = table_selector.eval_query(query_data)
-        query_results['selects'] = table_results
-        #print '\n\nTabled query results : ' + str(table_results)
+        query_results["selects"] = table_results
+        #print "\n\nTabled query results : " + str(table_results)
 
         filter_selector = FilterSelector()
         filter_results = filter_selector.eval_query(query_data)
-        query_results['filters'] = filter_results
-        #print '\n\nFiltered query results : ' + str(filter_results)
+        query_results["filters"] = filter_results
+        #print "\n\nFiltered query results : " + str(filter_results)
 
         join_selector = JoinSelector()
         join_results = join_selector.eval_query(query_data)
-        query_results['joins'] = join_results
-        #print '\n\nFiltered join results : ' + str(join_results)
+        query_results["joins"] = join_results
+        #print "\n\nFiltered join results : " + str(join_results)
 
         end = timer()
-        # print '\n\n' + str(results)
-        print('\n\nQuery planned in ' + str(end - start))
+        # print "\n\n" + str(results)
+        print("\n\nQuery planned in " + str(end - start))
         return query_results
 

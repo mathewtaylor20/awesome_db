@@ -6,7 +6,7 @@ indexes = {}
 
 def create_table_data(data):
     table_name = data["table"]
-    print table_name + ' table file present'
+    print table_name + " table file present"
     table_data[table_name] = {}
     table_data[table_name]["name"] = table_name
     table_data[table_name]["data_loc"] = data["location"]

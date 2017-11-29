@@ -27,11 +27,11 @@ class FilterSelector:
        # print str(query_data)
         filter_results_dict = {}
 
-        for table_name, column_values in query_data['tables'].iteritems():
+        for table_name, column_values in query_data["tables"].iteritems():
             filter_results_dict[table_name] = {}
             for first_column_name, first_column_value in column_values.iteritems():
                 filter_results_dict[table_name][first_column_name] = {}
-                #print first_column_name + ' : ' + str(first_column_value)
+
                 query_results = {}
                 query_results[0] = []
                 query_results[1] = []
@@ -43,73 +43,75 @@ class FilterSelector:
                 query_results[7] = []
                 query_results[8] = []
                 query_results[9] = []
-                first_column_type = first_column_value['type']
+                first_column_type = first_column_value["type"]
                 for second_column_name, second_column_value in column_values.iteritems():
                     if first_column_name == second_column_name:
                         continue
+                    if second_column_value["is_join"]:
+                        continue
 
-                    second_column_type = second_column_value['type']
-                    if first_column_type == 'si' and second_column_type == 'si':
-                        query_results[0].append(query_data['tables'][table_name][second_column_name])
-                    elif ((first_column_type == 'mi' and second_column_type == 'si') or
-                          (first_column_type == 'si' and second_column_type == 'mi')):
-                        query_results[1].append(query_data['tables'][table_name][second_column_name])
-                    elif (first_column_type == 'mi' and second_column_type == 'mi'):
-                        query_results[2].append(query_data['tables'][table_name][second_column_name])
-                    elif ((first_column_type == 'si' and second_column_type == 'lts') or
-                          (first_column_type == 'lts' and second_column_type == 'si')):
-                        query_results[3].append(query_data['tables'][table_name][second_column_name])
-                    elif ((first_column_type == 'mi' and second_column_type == 'lts') or
-                              (first_column_type == 'lts' and second_column_type == 'mi')):
-                        query_results[4].append(query_data['tables'][table_name][second_column_name])
-                    elif ((first_column_type == 'si' and second_column_type == 'fts') or
-                         (first_column_type == 'fts' and second_column_type == 'si')):
-                        query_results[5].append(query_data['tables'][table_name][second_column_name])
-                    elif ((first_column_type == 'mi' and second_column_type == 'fts') or
-                              (first_column_type == 'fts' and second_column_type == 'mi')):
-                        query_results[6].append(query_data['tables'][table_name][second_column_name])
-                    elif ((first_column_type == 'lts' and second_column_type == 'lts') or
-                          (first_column_type == 'lts' and second_column_type == 'lts')):
+                    second_column_type = second_column_value["type"]
+                    if first_column_type == "si" and second_column_type == "si":
+                        query_results[0].append(query_data["tables"][table_name][second_column_name])
+                    elif ((first_column_type == "mi" and second_column_type == "si") or
+                          (first_column_type == "si" and second_column_type == "mi")):
+                        query_results[1].append(query_data["tables"][table_name][second_column_name])
+                    elif (first_column_type == "mi" and second_column_type == "mi"):
+                        query_results[2].append(query_data["tables"][table_name][second_column_name])
+                    elif ((first_column_type == "si" and second_column_type == "lts") or
+                          (first_column_type == "lts" and second_column_type == "si")):
+                        query_results[3].append(query_data["tables"][table_name][second_column_name])
+                    elif ((first_column_type == "mi" and second_column_type == "lts") or
+                              (first_column_type == "lts" and second_column_type == "mi")):
+                        query_results[4].append(query_data["tables"][table_name][second_column_name])
+                    elif ((first_column_type == "si" and second_column_type == "fts") or
+                         (first_column_type == "fts" and second_column_type == "si")):
+                        query_results[5].append(query_data["tables"][table_name][second_column_name])
+                    elif ((first_column_type == "mi" and second_column_type == "fts") or
+                              (first_column_type == "fts" and second_column_type == "mi")):
+                        query_results[6].append(query_data["tables"][table_name][second_column_name])
+                    elif ((first_column_type == "lts" and second_column_type == "lts") or
+                          (first_column_type == "lts" and second_column_type == "lts")):
                         query_results[7].append(query_data[table_name][second_column_name])
-                    elif ((first_column_type == 'lts' and second_column_type == 'fts') or
-                         (first_column_type == 'fts' and second_column_type == 'lts')):
-                        query_results[8].append(query_data['tables'][table_name][second_column_name])
-                    elif ((first_column_type == 'fts' and second_column_type == 'fts') or
-                         (first_column_type == 'fts' and second_column_type == 'fts')):
-                        query_results[9].append(query_data['tables'][table_name][second_column_name])
+                    elif ((first_column_type == "lts" and second_column_type == "fts") or
+                         (first_column_type == "fts" and second_column_type == "lts")):
+                        query_results[8].append(query_data["tables"][table_name][second_column_name])
+                    elif ((first_column_type == "fts" and second_column_type == "fts") or
+                         (first_column_type == "fts" and second_column_type == "fts")):
+                        query_results[9].append(query_data["tables"][table_name][second_column_name])
                     else:
-                        print 'first_column_type ' + first_column_type + ' : ' + ' second_column_type ' + second_column_type
+                        print "first_column_type " + first_column_type + " : " + " second_column_type " + second_column_type
 
                 query_score = 0
                 for element in self.sub_score_query("result_factor",  query_results[0]):
-                    self.set_results( query_data, filter_results_dict, table_name, first_column_name, element['column'], query_score)
+                    self.set_results( query_data, filter_results_dict, table_name, first_column_name, element["column_id"], query_score)
                     query_score += 1
                 for element in self.sub_score_query("result_factor", query_results[1]):
-                    self.set_results( query_data, filter_results_dict, table_name, first_column_name, element['column'], query_score)
+                    self.set_results( query_data, filter_results_dict, table_name, first_column_name, element["column_id"], query_score)
                     query_score += 1
                 for element in self.sub_score_query("result_factor", query_results[2]):
-                    self.set_results( query_data, filter_results_dict, table_name, first_column_name, element['column'], query_score)
+                    self.set_results( query_data, filter_results_dict, table_name, first_column_name, element["column_id"], query_score)
                     query_score += 1
                 for element in self.sub_score_query("result_factor", query_results[3]):
-                    self.set_results( query_data, filter_results_dict, table_name, first_column_name, element['column'], query_score)
+                    self.set_results( query_data, filter_results_dict, table_name, first_column_name, element["column_id"], query_score)
                     query_score += 1
                 for element in self.sub_score_query("result_factor", query_results[4]):
-                    self.set_results( query_data, filter_results_dict, table_name, first_column_name, element['column'], query_score)
+                    self.set_results( query_data, filter_results_dict, table_name, first_column_name, element["column_id"], query_score)
                     query_score += 1
                 for element in self.sub_score_query("result_factor", query_results[5]):
-                    self.set_results( query_data, filter_results_dict, table_name, first_column_name, element['column'], query_score)
+                    self.set_results( query_data, filter_results_dict, table_name, first_column_name, element["column_id"], query_score)
                     query_score += 1
                 for element in self.sub_score_query("result_factor", query_results[6]):
-                    self.set_results( query_data, filter_results_dict, table_name, first_column_name, element['column'], query_score)
+                    self.set_results( query_data, filter_results_dict, table_name, first_column_name, element["column_id"], query_score)
                     query_score += 1
                 for element in self.sub_score_query("result_factor", query_results[7]):
-                    self.set_results( query_data, filter_results_dict, table_name, first_column_name, element['column'], query_score)
+                    self.set_results( query_data, filter_results_dict, table_name, first_column_name, element["column_id"], query_score)
                     query_score += 1
                 for element in self.sub_score_query("result_factor", query_results[8]):
-                    self.set_results( query_data, filter_results_dict, table_name, first_column_name, element['column'], query_score)
+                    self.set_results( query_data, filter_results_dict, table_name, first_column_name, element["column_id"], query_score)
                     query_score += 1
                 for element in self.sub_score_query("result_factor", query_results[9]):
-                    self.set_results( query_data, filter_results_dict, table_name, first_column_name, element['column'], query_score)
+                    self.set_results( query_data, filter_results_dict, table_name, first_column_name, element["column_id"], query_score)
                     query_score += 1
         return filter_results_dict
 
@@ -123,8 +125,8 @@ class FilterSelector:
 
     def set_results(self, query_data, filter_results_dict, table_name, first_column_name, second_column_name, query_score):
         filter_results_dict[table_name][first_column_name][second_column_name] = {}
-        filter_results_dict[table_name][first_column_name][second_column_name]['name'] = query_data['tables'][table_name][second_column_name]['name']
-        filter_results_dict[table_name][first_column_name][second_column_name]['table'] = query_data['tables'][table_name][second_column_name]['table']
-        filter_results_dict[table_name][first_column_name][second_column_name]['column'] = query_data['tables'][table_name][second_column_name]['column']
-        filter_results_dict[table_name][first_column_name][second_column_name]['type'] = query_data['tables'][table_name][second_column_name]['type']
-        filter_results_dict[table_name][first_column_name][second_column_name]['score'] = query_score
+        filter_results_dict[table_name][first_column_name][second_column_name]["name"] = query_data["tables"][table_name][second_column_name]["name"]
+        filter_results_dict[table_name][first_column_name][second_column_name]["table"] = query_data["tables"][table_name][second_column_name]["table"]
+        filter_results_dict[table_name][first_column_name][second_column_name]["column"] = query_data["tables"][table_name][second_column_name]["column"]
+        filter_results_dict[table_name][first_column_name][second_column_name]["type"] = query_data["tables"][table_name][second_column_name]["type"]
+        filter_results_dict[table_name][first_column_name][second_column_name]["score"] = query_score

@@ -2,7 +2,7 @@ from __future__ import absolute_import
 
 import unittest
 import json
-import query_data
+from query_data import QueryData
 
 from db_initializer import DBInitializer
 from query_table_selector import TableSelector
@@ -17,6 +17,7 @@ class QueryTableSelectorTest(unittest.TestCase):
     def test_query_5(self):
         with open('../queries/1.json') as json_data:
             query = json.loads(json_data.read())
+        query_data = QueryData()
         query_data_obj = query_data.create_query_data(query)
         table_selector = TableSelector()
         print "5 " + str(table_selector.eval_query(query_data_obj))

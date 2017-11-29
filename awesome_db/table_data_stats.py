@@ -8,7 +8,7 @@ class TableStats:
 
     def create_stats(self):
         for table_def in table_data.table_data.values():
-            print 'Reading data for ' + table_def['name'] + '...'
+            print "Reading data for " + table_def["name"] + "..."
             column_cardinality = {}
             column_count = table_def["column_count"]
             j = 0
@@ -20,7 +20,7 @@ class TableStats:
 
             for data_file in listdir(table_def["data_store"]):
                 with open(table_def["data_store"] + data_file) as carding_data:
-                    table_reader = csv.reader(carding_data, delimiter=',', quotechar='|')
+                    table_reader = csv.reader(carding_data, delimiter=",", quotechar="|")
                     for row in table_reader:
                         i = 0
                         for value in row:
@@ -29,9 +29,9 @@ class TableStats:
                             i += 1
 
             for column_pos, value in column_cardinality.iteritems():
-                print 'Table : ' + table_def["name"] + ' : ' + table_def["columns_pos"][column_pos]["name"] + ' : ' + \
-                      ' : ' + str(len(value["count"])) + ' : ' + str(value["size"]) + \
-                      ' : cardinality = ' + str(float(value["size"])/float(len(value["count"])))
+                print "Table : " + table_def["name"] + " : " + table_def["columns_pos"][column_pos]["name"] + " : " + \
+                      " : " + str(len(value["count"])) + " : " + str(value["size"]) + \
+                      " : cardinality = " + str(float(value["size"])/float(len(value["count"])))
                 table_def["columns_pos"][column_pos]["cardinality"] = float(value["size"]/len(value["count"]))
                 table_def["columns"][table_def["columns_pos"][column_pos]["name"]]["cardinality"] = float(value["size"]/len(value["count"]))
                 table_def["columns_pos"][column_pos]["size"] = value["size"]
