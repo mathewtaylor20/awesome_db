@@ -1,7 +1,6 @@
 import json
 from timeit import default_timer as timer
 
-import query_data
 from db_initializer import DBInitializer
 from query_data import QueryData
 from query_executor import QueryExecutor

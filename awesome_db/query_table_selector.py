@@ -4,17 +4,6 @@ class TableSelector:
     def eval_query(self, query_data):
 
         table_results_dict = {}
-        query_data_obj = {}
-    #    for table_key, table_val in query_data["tables"].iteritems():
-    #        if table_key not in query_data_obj:
-    #            query_data_obj[table_key] = {}
-    #        query_data_obj[table_key].update(table_val)
-
-    #    for table_key, table_val in query_data["optimised_selects"].iteritems():
-    #        if table_key not in query_data_obj:
-    #            query_data_obj[table_key] = {}
-    #        query_data_obj[table_key].update(table_val)
-
         self.score_query(table_results_dict, query_data["tables"])
         return table_results_dict
 
